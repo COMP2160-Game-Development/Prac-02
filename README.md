@@ -21,7 +21,7 @@ Turbo Boost: SpaceBar
 
 The blue car chases the orange car. The blue car slows to a stop when it gets close to the orange car.
 
-The two main pieces of documentation for today are [The Transform class](https://docs.unity3d.com/2023.1/Documentation/ScriptReference/Transform.html) and [The new Input System and the Action Asset workflow](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.6/manual/Workflow-ActionsAsset.html). Refer back to these pages whenever you get stuck.
+The two main pieces of documentation for today are [The Transform class](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform.html) and [The new Input System and the Action Asset workflow](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.6/manual/Workflow-ActionsAsset.html). Refer back to these pages whenever you get stuck.
 
 ## Step 1 – Get moving (10 min)
 Open the SampleScene in the Scenes folder. It contains a single orange car (a rectangular block).
@@ -64,11 +64,11 @@ Add code to make your car turn at a constant rate, using ```transform.Rotate()``
 [SerializeField] private float turningRate;
 ```
 
-Remember to specify this in the inspector before running your game. Don't forget to check the [documentation for more info on Rotate()](https://docs.unity3d.com/2023.1/Documentation/ScriptReference/Transform.Rotate.html).
+Remember to specify this in the inspector before running your game. Don't forget to check the [documentation for more info on Rotate()](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform.Rotate.html).
 
 Figuring out which axis to rotate around can be a bit tricky. The way to think of this is we want to rotate around the axis that ISN'T changing. So, if an object is going to be pointing in different X and Z directions, then we want to apply the rotation on the Y axis. 
 
-If we had to define this vector ourselves, it would be (0,1,0). However, Unity has a number of built-in Vector3 short-hands that we can use to make our life easier. Look at the [Vector3 scripting reference](https://docs.unity3d.com/2023.1/Documentation/ScriptReference/Vector3.html) and find a static property to use instead. Define a variable with a meaningful name (like `rotationAxis`) and assign it this Vector3.
+If we had to define this vector ourselves, it would be (0,1,0). However, Unity has a number of built-in Vector3 short-hands that we can use to make our life easier. Look at the [Vector3 scripting reference](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Vector3.html) and find a static property to use instead. Define a variable with a meaningful name (like `rotationAxis`) and assign it this Vector3.
 
 ```
 transform.Rotate(rotationAxis * turningRate * Time.deltaTime, Space.Self);
@@ -110,14 +110,14 @@ In the Inspector, drag the orange car into the target slot on the chase car. Not
 
 In the Chase MonoBehaviour's Update method, we want to get the distance between the two cars as a float. There are two problems to solve:
 * First, get the vector from transform.position to target.position - how do you do it? Check the lecture notes and ask your demonstrator for help.
-* Then, we need a method to find the magnitude of this vector (it's length). Have a look at the [Unity Documentation for Vector3](https://docs.unity3d.com/ScriptReference/Vector3.html) and try to find a Static Method that you can use to get the magnitude. This is our distance value.
+* Then, we need a method to find the magnitude of this vector (it's length). Have a look at the [Unity Documentation for Vector3](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Vector3.html) and try to find a Static Method that you can use to get the magnitude. This is our distance value.
   
 If the car is more than some minimum distance (tunable parameter) from the target, it should move forwards in local coordinates. Otherwise, it should stop. Code this and test it. 
 
 ### Turning
 To make the car turn appropriately, we need to know whether the target is to the left or the right. We can do this by transforming the target’s position into the car’s local coordinate space, thereby getting the target's position *relative* to the chase car.
 
-Take a look at the following methods to determine which one you should use and why. If you're a bit stuck, have a look at the documentation for [TransformPoint](https://docs.unity3d.com/ScriptReference/Transform.TransformPoint.html) and [InverseTransformPoint](https://docs.unity3d.com/ScriptReference/Transform.InverseTransformPoint.html).
+Take a look at the following methods to determine which one you should use and why. If you're a bit stuck, have a look at the documentation for [TransformPoint](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform.TransformPoint.html) and [InverseTransformPoint](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform.InverseTransformPoint.html).
 
 
 ```
@@ -132,7 +132,7 @@ Once we have the point in the right coordinate space, we can check whether it is
 Use this x value, plus the pattern for rotating the orange car you've already learnt, to get the blue car to turn to face the orange one. Call over your demonstrator if you get stuck!
 
 ### Slowing down
-Having the car stop suddenly when it reaches the minDistance is a bit jarring. What value might you factor into your movement equation to achieve this? Write down some ideas and give them a try. Don't be afraid to [explore more documentation](https://docs.unity3d.com/ScriptReference/Mathf.Clamp.html) for a solution. Ask your demonstrator for clues!
+Having the car stop suddenly when it reaches the minDistance is a bit jarring. What value might you factor into your movement equation to achieve this? Write down some ideas and give them a try. Don't be afraid to [explore more documentation](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Mathf.Clamp.html) for a solution. Ask your demonstrator for clues!
 
 ## Step 4 – Adding input (30 min)
 Let's now take control of the car's movement and turning by adding player input. We'll need to add the New Unity Input System to our project and disable the old one to get started.
@@ -146,9 +146,9 @@ The new Input System offers many approaches. We will be taking the approach we b
 
 Create a new Input Actions Asset (Assets > Create > Input Actions). Make sure to give it a meaningful name. I'm calling mine ```PlayerActions```. You'll also want to store it in a folder.
 
-Select your Input Actions Asset to make it appear in the Inspector, then click "Edit asset" to start adding Inputs. <b> IMPORTANT! MAKE SURE YOU TICK THE "Auto-Save" box! </b>
+Select your Input Actions Asset to make it appear in the Inspector, then click "Edit asset" to start adding Inputs. <b> IMPORTANT! MAKE SURE YOU ENABLE THE "Auto-Save" option! </b>
 
-![An image of the InputActions editor, with the "Auto-Save" box ticked.](images/Week2_4.png)
+![An image of the InputActions editor, with the "Auto-Save" option enabled.](images/Week2_4.png)
 
 Let's consider what actions we want. We want the player to...
 
@@ -189,7 +189,7 @@ First, you'll need to add the InputSystem library to this script, so add `using 
     private PlayerActions actions;
     private InputAction movementAction;
 ```
-We then need to initiate things. We need to do this in the `Awake()` method, which runs before the `Start()` method (This order is detailed in the [execution of Unity methods documentation](https://docs.unity3d.com/Manual/ExecutionOrder.html)).
+We then need to initiate things. We need to do this in the `Awake()` method, which runs before the `Start()` method (This order is detailed in the [execution of Unity methods documentation](https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html)).
 
 ```
 void Awake()
@@ -236,7 +236,7 @@ Next, following the patterns you've learnt so far, use the x value of your input
 ## Step 5 - Modulating speed (15 min)
 We're now going to give our car a "turbo" boost option, which allows the player to increase their speed for a short period of time. We'll use an event-driven approach to get this value.
 
-Open your Input Action Asset again and add a new Action to the ActionMap. Name it "turbo". This time, we want the Action Type to be set to "Button", as we want to receive whether it is pressed or not. For more info on the difference between these types, [see the documentation](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Actions.html#action-types).
+Open your Input Action Asset again and add a new Action to the ActionMap. Name it "turbo". This time, we want the Action Type to be set to "Button", as we want to receive whether it is pressed or not. For more info on the difference between these types, [see the documentation](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.14/api/UnityEngine.InputSystem.InputActionType.html#fields).
 
 The default binding only takes a single button/key. This will do fine for our purposes, so simply set the path of the Binding to a button of your choice - I'd recommend the SpaceBar.
 
@@ -265,11 +265,15 @@ If you play the game now, pressing the boost button should make the player's car
 ### Cleaning up your code
 We've made a lot of long equations today! If you haven't already, consider going through your methods and seeing where things can be cleaned up. While we want to make sure our code is efficient, we also want to ensure it is readable, and values aren't being repeated, so as to avoid code smell. Consider some of the values you are working with and if anything can be made a bit neater. (Hint: do you still need to calculate the distance between cars to get magnitude?)
 
-Chat to your demonstrator when being marked off for advise on making your code clearer.
+Have your classmates read your code to see if there are any issues with readability.
 
-## Prac Complete! To receive your mark for today, show your demonstrator:
-* Your code for moving the cars.
-* Your code for handling boosting, and why you did it that way.
-* Your controls.
+Chat to your demonstrator for advise on making your code clearer.
+
+
+## Prac Complete! Goal for today:
+* Your code moves the cars.
+* Your code can handle boosting, and you understand why you did it that way.
+* Your cars are controled by player input.
+* Your code has been cleaned up and you understand the benefits to the cleaner version.
 
 Good job! Don't forget to save, commit and push your work! See you next time!
